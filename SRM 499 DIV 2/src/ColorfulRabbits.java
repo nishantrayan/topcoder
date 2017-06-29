@@ -1,7 +1,5 @@
-import java.util.*;
-import java.math.*;
-
-import static java.lang.Math.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ColorfulRabbits {
