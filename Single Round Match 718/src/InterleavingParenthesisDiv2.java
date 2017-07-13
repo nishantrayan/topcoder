@@ -8,7 +8,7 @@ public class InterleavingParenthesisDiv2 {
 
   int[][] openSoFar = new int[51][51];
   int[][] memo = new int[51][51];
-  long POW = (long) (Math.pow(10, 9) + 7);
+  int POW = (int) (Math.pow(10, 9) + 7);
 
   public int countWays(String s1, String s2) {
     for (int i = 0; i <= s1.length(); i++) {
@@ -29,29 +29,23 @@ public class InterleavingParenthesisDiv2 {
     }
     memo = new int[51][51];
     for (int i = 0; i < memo.length; i++) {
-      for (int j = 0; j < memo[i].length; j++) {
-        memo[i][j] = -1;
-      }
+      Arrays.fill(memo[i], -1);
     }
+    memo[s1.length()][s2.length()] = openSoFar[s1.length()][s2.length()] == 0 ? 1 : 0;
     return count(s1, s2, 0, 0);
   }
 
-  public int count(String s1, String s2, int index1, int index2) {
+  private int count(String s1, String s2, int index1, int index2) {
     if (memo[index1][index2] != -1) {
       return memo[index1][index2];
     }
-    if (index1 >= s1.length() && index2 >= s2.length() && openSoFar[s1.length()][s2.length()] == 0) {
-      return 1;
-    }
-    long c = 0;
-    if (index1 < s1.length() && ((s1.charAt(index1) == ')' && openSoFar[index1 + 1][index2] >= 0)
-        || s1.charAt(index1) == '(')) {
+    int c = 0;
+    if (index1 < s1.length() && openSoFar[index1 + 1][index2] >= 0) {
       c += count(s1, s2, index1 + 1, index2);
     }
-    if (index2 < s2.length() && ((s2.charAt(index2) == ')' && openSoFar[index1][index2 + 1] >= 0)
-        || s2.charAt(index2) == '(')) {
+    if (index2 < s2.length() && openSoFar[index1][index2 + 1] >= 0) {
       c += count(s1, s2, index1, index2 + 1);
     }
-    return memo[index1][index2] = (int)(c % POW);
+    return memo[index1][index2] = c % POW;
   }
 }
